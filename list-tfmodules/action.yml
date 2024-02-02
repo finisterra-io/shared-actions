@@ -1,0 +1,28 @@
+name: List Terraform modules
+description: |
+  This GitHub Action lists Terraform modules in a repository.
+
+outputs:
+  directories:
+    description: "A JSON array of Terraform module directories"
+    value: ${{ steps.list-folders.outputs.directories }}
+    
+runs:
+  using: composite
+  steps:
+    - name: List all folders
+        id: list-folders
+        run: |
+          # Explicitly set the root directory as just the current folder
+          root_directories="."
+
+          # Find all first-level directories within the 'modules' directory
+          modules_directories=$(find ./modules/* -maxdepth 0 -type d | sed 's|^./||')
+
+          # Combine the lists into a JSON array
+          # Note: Using printf to properly handle newline characters and jq to create a JSON array
+          directories=$(printf '%s\n' "$root_directories" $modules_directories | jq -R -s -c 'split("\n")[:-1]')
+
+          # Output the directories to the GITHUB_OUTPUT in a format that GitHub Actions can parse
+          echo "directories=${directories}" >> $GITHUB_OUTPUT
+    
