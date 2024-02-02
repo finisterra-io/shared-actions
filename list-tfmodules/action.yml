@@ -12,6 +12,7 @@ runs:
   steps:
     - name: List all folders
       id: list-folders
+      shell: bash
       run: |
         # Explicitly set the root directory as just the current folder
         root_directories="."
