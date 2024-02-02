@@ -30,4 +30,6 @@ runs:
         sudo mv tflint /usr/bin/
     - name: Run TFLint
       shell: bash
-      run: tflint
+      run: |
+        pwd
+        tflint
