@@ -18,13 +18,16 @@ runs:
       with:
         terraform_version: ${{inputs.terraform-version}}
     - name: validate
+      shell: bash
       run: |
         terraform init
         terraform validate
     - name: Setup TFLint
+      shell: bash
       run: |
         wget https://github.com/terraform-linters/tflint/releases/download/${{inputs.tflint-version}}/tflint_linux_amd64.zip
         unzip tflint_linux_amd64.zip
         sudo mv tflint /usr/bin/
     - name: Run TFLint
+      shell: bash
       run: tflint
