@@ -15,9 +15,6 @@ inputs:
     required: true
 runs:
   using: composite
-  defaults:
-    run:
-      working-directory: ${{inputs.path}}
   steps:
     - name: setup terraform
       uses: hashicorp/setup-terraform@v2
@@ -26,6 +23,7 @@ runs:
     - name: validate
       shell: bash
       run: |
+        cd ${{inputs.path}}
         terraform init
         terraform validate
     - name: Setup TFLint
@@ -37,5 +35,6 @@ runs:
     - name: Run TFLint
       shell: bash
       run: |
+        cd ${{inputs.path}}
         pwd
         tflint
