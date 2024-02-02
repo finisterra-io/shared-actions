@@ -1,0 +1,30 @@
+name: Validate and lint Terraform code
+description: |
+  This GitHub Action validates and lints Terraform code using tflint and terraform validate.
+inputs:
+  terraform-version:
+    description: "The version of Terraform to use"
+    required: true
+    default: "1.5"
+  tflint-version:
+    description: "The version of tflint to use"
+    required: true
+    default: "v0.46.1"
+runs:
+  using: composite
+  steps:
+    - name: setup terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{inputs.terraform-version}}
+    - name: validate
+      run: |
+        terraform init
+        terraform validate
+    - name: Setup TFLint
+      run: |
+        wget https://github.com/terraform-linters/tflint/releases/download/${{inputs.tflint-version}}/tflint_linux_amd64.zip
+        unzip tflint_linux_amd64.zip
+        sudo mv tflint /usr/bin/
+    - name: Run TFLint
+      run: tflint
