@@ -10,8 +10,14 @@ inputs:
     description: "The version of tflint to use"
     required: true
     default: "v0.46.1"
+  path:
+    description: "The path to the Terraform code"
+    required: true
 runs:
   using: composite
+  defaults:
+    run:
+      working-directory: ${{inputs.path}}
   steps:
     - name: setup terraform
       uses: hashicorp/setup-terraform@v2
