@@ -36,5 +36,4 @@ runs:
       shell: bash
       run: |
         cd ${{inputs.path}}
-        pwd
         tflint
